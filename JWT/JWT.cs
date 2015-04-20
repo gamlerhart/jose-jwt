@@ -61,7 +61,7 @@ namespace Jose
     /// <summary>
     /// Provides methods for encoding and decoding JSON Web Tokens.
     /// </summary>
-    public static class JWT
+    public class JWT
     {        
         private static Dictionary<JwsAlgorithm, IJwsAlgorithm> HashAlgorithms;
         private static Dictionary<JweEncryption, IJweAlgorithm> EncAlgorithms;
@@ -73,16 +73,15 @@ namespace Jose
         private static Dictionary<JweCompression, string> JweCompressionMethods = new Dictionary<JweCompression, string>();
         private static Dictionary<JwsAlgorithm, string> JwsAlgorithms = new Dictionary<JwsAlgorithm, string>();         
 
-        private static IJsonMapper jsMapper;
+        private readonly IJsonMapper jsMapper;
 
-        public static IJsonMapper JsonMapper
+        public JWT(IJsonMapper jsMapper)
         {
-            set { jsMapper = value; }
+            this.jsMapper = jsMapper;
         }
 
         static JWT()
         {
-            JsonMapper = new JSSerializerMapper();
 
             HashAlgorithms = new Dictionary<JwsAlgorithm, IJwsAlgorithm>
             {
@@ -191,7 +190,7 @@ namespace Jose
         /// <param name="payload">json string to encode</param>
         /// <param name="key">key for encryption, suitable for provided JWS algorithm, can be null.</param>
         /// <returns>JWT in compact serialization form, encrypted and/or compressed.</returns>
-        public static string Encode(object payload, object key, JweAlgorithm alg, JweEncryption enc, JweCompression? compression = null)
+        public string Encode(object payload, object key, JweAlgorithm alg, JweEncryption enc, JweCompression? compression = null)
         {
             return Encode(jsMapper.Serialize(payload), key, alg, enc);
         }
@@ -203,7 +202,7 @@ namespace Jose
         /// <param name="payload">json string to encode (not null or whitespace)</param>
         /// <param name="key">key for encryption, suitable for provided JWS algorithm, can be null.</param>
         /// <returns>JWT in compact serialization form, encrypted and/or compressed.</returns>
-        public static string Encode(string payload, object key, JweAlgorithm alg, JweEncryption enc, JweCompression? compression=null)
+        public string Encode(string payload, object key, JweAlgorithm alg, JweEncryption enc, JweCompression? compression=null)
         {
             Ensure.IsNotEmpty(payload, "Payload expected to be not empty, whitespace or null.");
 
@@ -238,7 +237,7 @@ namespace Jose
         /// <param name="payload">object to map to json string and encode</param>
         /// <param name="key">key for signing, suitable for provided JWS algorithm, can be null.</param>
         /// <returns>JWT in compact serialization form, digitally signed.</returns>
-        public static string Encode(object payload, object key, JwsAlgorithm algorithm)
+        public string Encode(object payload, object key, JwsAlgorithm algorithm)
         {
             return Encode(jsMapper.Serialize(payload), key, algorithm);
         }
@@ -249,7 +248,7 @@ namespace Jose
         /// <param name="payload">json string to encode (not null or whitespace)</param>
         /// <param name="key">key for signing, suitable for provided JWS algorithm, can be null.</param>
         /// <returns>JWT in compact serialization form, digitally signed.</returns>
-        public static string Encode(string payload, object key, JwsAlgorithm algorithm)
+        public string Encode(string payload, object key, JwsAlgorithm algorithm)
         {
             Ensure.IsNotEmpty(payload, "Payload expected to be not empty, whitespace or null.");
 
@@ -275,7 +274,7 @@ namespace Jose
         /// <exception cref="IntegrityException">if signature valdation failed</exception>
         /// <exception cref="EncryptionException">if JWT token can't be decrypted</exception>
         /// <exception cref="InvalidAlgorithmException">if JWT signature,encryption or compression algorithm is not supported</exception>        
-        public static string Decode(string token, object key = null)
+        public string Decode(string token, object key = null)
         {
             Ensure.IsNotEmpty(token, "Incoming token expected to be in compact serialization form, not empty, whitespace or null.");
 
@@ -319,12 +318,12 @@ namespace Jose
         /// <exception cref="IntegrityException">if signature valdation failed</exception>
         /// <exception cref="EncryptionException">if JWT token can't be decrypted</exception>
         /// <exception cref="InvalidAlgorithmException">if JWT signature,encryption or compression algorithm is not supported</exception>        
-        public static T Decode<T>(string token, object key=null)
+        public T Decode<T>(string token, object key=null)
         {
             return jsMapper.Parse<T>(Decode(token, key));
         }
 
-        private static string Decrypt(byte[][] parts, object key)
+        private string Decrypt(byte[][] parts, object key)
         {
             byte[] header = parts[0];
             byte[] encryptedCek = parts[1];

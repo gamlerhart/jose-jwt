@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{2484B30F-97B4-4C2A-802D-07EE1F330C80}</ProjectGuid>
+    <ProjectGuid>{9E4DF82B-420F-47E4-BD7E-2C11997C2AC3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UnitTests</RootNamespace>
-    <AssemblyName>UnitTests</AssemblyName>
+    <RootNamespace>JWT.WebJson</RootNamespace>
+    <AssemblyName>JWT.WebJson</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,47 +31,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework">
-      <HintPath>lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Extensions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AesGcmTest.cs" />
-    <Compile Include="AesKeyWrapTest.cs" />
-    <Compile Include="ArraysTest.cs" />
-    <Compile Include="Base64UrlTest.cs" />
-    <Compile Include="CompactTest.cs" />
-    <Compile Include="ConcatKDFTest.cs" />
-    <Compile Include="PBKDF2Test.cs" />
+    <Compile Include="JSSerializerMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestSuite.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JWT.DesktopJson\JWT.DesktopJson.csproj">
-      <Project>{d44d2072-862e-4092-bbaa-fa5cd00eb5a3}</Project>
-      <Name>JWT.DesktopJson</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\JWT.WebJson\JWT.WebJson.csproj">
-      <Project>{9e4df82b-420f-47e4-bd7e-2c11997c2ac3}</Project>
-      <Name>JWT.WebJson</Name>
-    </ProjectReference>
     <ProjectReference Include="..\JWT\JWT.csproj">
-      <Project>{A80B51B8-DDF6-4026-98A4-B59653E50B38}</Project>
+      <Project>{a80b51b8-ddf6-4026-98a4-b59653e50b38}</Project>
       <Name>JWT</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="jwt-2048.p12">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
